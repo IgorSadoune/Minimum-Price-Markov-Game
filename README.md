@@ -37,7 +37,6 @@ This installs the package in "editable" mode, meaning any changes made in the so
 
 ### Requirements
 - Python 3.6+
-- NumPy
 
 Dependencies can be installed from `requirements.txt`:
 
