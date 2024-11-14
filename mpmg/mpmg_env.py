@@ -101,7 +101,7 @@ class MPMGEnv:
             rewards = ((1 - self.beta_parameters) * (self.beta_parameters / beta_omega)) * mask_defect
         return rewards
 
-    def _get_state(self) -> Dict[str, np.ndarray]:
+    def _get_state(self) -> np.ndarray:
         '''
         Observation space can be incremented here.
         '''
