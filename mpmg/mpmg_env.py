@@ -125,9 +125,9 @@ class MPMGEnv:
         joint_actions = list(itertools.product(range(self.action_size), repeat=self.num_agents))
         for actions in joint_actions:
             _, _, _ = self.step(list(actions))
-        self._get_state()
 
-        return self.state_space
+
+        return self._get_state()
     
     def step(self, actions: List[int]) -> Tuple[np.ndarray, dict, bool]:
         '''
