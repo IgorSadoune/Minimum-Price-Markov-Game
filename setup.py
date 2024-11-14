@@ -4,13 +4,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='mpmg',  
-    version='0.1.0',  
+    version='0.1.1',  
     description='A Minimum Price Markov Game modular environment', 
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author='Igor Sadoune',
     author_email='igor.sadoune@polymtl.ca',
-    url='https://github.com/IgorSadoune/Minimum-Price-Markov-Game',
+    url='https://github.com/IgorSadoune/mpmg-python-package',
     license='MIT', 
     packages=find_packages(exclude=['logs', 'logs.*']),
     install_requires=[
