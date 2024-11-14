@@ -12,7 +12,6 @@ setup(
     author_email='igor.sadoune@polymtl.ca',
     url='https://github.com/IgorSadoune/mpmg-python-package',
     license='MIT', 
-    packages=find_packages(exclude=['logs', 'logs.*']),
     install_requires=[
         'numpy',
         ],
