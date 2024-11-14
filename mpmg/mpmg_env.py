@@ -126,7 +126,6 @@ class MPMGEnv:
         for actions in joint_actions:
             _, _, _ = self.step(list(actions))
 
-
         return self._get_state()
     
     def step(self, actions: List[int]) -> Tuple[np.ndarray, dict, bool]:
