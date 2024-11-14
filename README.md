@@ -6,7 +6,6 @@
 
 ## Features
 - **Customizable Multi-Agent Environment**: Supports different numbers of agents and heterogeneous vs. homogeneous settings.
-- **Test Framework**: Visualize action frequencies and average rewards over time for custom MPMG configurations.
 
 ## Project Structure
 
@@ -15,9 +14,6 @@ mpmg/
 ├── mpmg/                  # Main package directory
 │   ├── __init__.py        # Package initialization
 │   └── mpmg_env.py        # Environment implementation
-├── tests/                 # Unit and integration tests
-│   ├── __init__.py        # Package initialization for tests (optional)
-│   └── test_mpmg_logic.py # Tests and scenario validation
 ├── .gitignore             # Ignored files for git
 ├── README.md              # Project description and usage guide
 ├── requirements.txt       # Project dependencies
@@ -30,12 +26,12 @@ mpmg/
 To install the package locally, run the following command from the root directory:
 
 ```sh
-pip install -e .
+pip install mpmg .
 ```
 
 This installs the package in "editable" mode, meaning any changes made in the source code will immediately reflect in the installed package.
 
-### Requirements
+## Requirements
 - Python 3.6+
 
 Dependencies can be installed from `requirements.txt`:
@@ -52,37 +48,34 @@ To use the `mpmg` package, import the `MPMGEnv` class and create an instance of 
 from mpmg import MPMGEnv
 
 # Create an instance of the environment
-env = MPMGEnv(n_agents=2, sigma_beta=0.0)
+env = MPMGEnv(n_agents=2, sigma_beta=0.0, alpha=1.3)
 
 # Reset the environment
-state = env.reset(seed=42)
+state = env.reset()
 
 # Take a step in the environment
 actions = [1, 0]  # Example actions for each agent
 rewards, next_state, done = env.step(actions)
 ```
 
+
 The `MPMGEnv` class provides methods for resetting the environment, taking steps, and observing the state, rewards, and dynamics of multi-agent interactions.
 
-## Running Tests
+## Parameter Definition
+```
+num_agents (int): Number of agents. Must be a positive integer, default value is 2.
 
-Unit tests are available in the `tests/` directory. You can run the tests using `pytest`:
+sigma_beta (float): Heterogeneity level, standard deviation of the power parameters' distribution. Must be in [0,1], default value is 0.
 
-```sh
-pytest tests/
+alpha (float): Collusive bid multiplier. Must be > 1.
 ```
 
-## Tests
-
-The test scenarios provided in `test_mpmg_logic.py` also generate logs of action frequencies and average rewards for each agent.
-
 ## Scenarios
-The environment supports the following scenarios for testing and analysis:
-- **Equiprobable Actions**: Agents choose actions with equal probability.
-- **Full Defection**: All agents choose to defect.
-- **Full Cooperation**: All agents cooperate.
+`MPMGEnv` is a social dilemma based on the Prisoner's Dilemma. 
 
-These scenarios can be run using the test script provided in `tests/test_mpmg_logic.py`.
+- **Full Defection**: All agents choose to defect (action 0), Nash Equilibrium.
+- **Full Cooperation**: All agents cooperate (action 1), Pareto Optimal.
+- **Asymmetric play**: actions taken can be separated into two sets, other suboptimal outcome.
 
 ## License
 
