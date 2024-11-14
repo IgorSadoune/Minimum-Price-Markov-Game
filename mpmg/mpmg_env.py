@@ -1,57 +1,57 @@
-# src/module/mpmg_env.py
+#mpmg/mpmg.py
 
-'''
-Minimum Price Markov Game modular environment.
-'''
-
-# Dependencies 
 import numpy as np
-import random
 import itertools
-from typing import Tuple, List, Dict, Optional
+from typing import Tuple, List, Dict
 
 
-class MPMGEnv(object):
+class MPMGEnv:
     '''
-    Default configuration: 
-    ----------------------
+    Minimum Price Markov Game modular environment. A theoretical model 
+    that reasonably approximates real-world first-price markets following the minimum price rule, 
+    such as public auctions. See: https://arxiv.org/abs/2407.03521 for more details.
 
-        - 2-player homogeneous MPMG with common binary action space
-        - collusive bids are 30% higher
+    Parameters:
+    ----------
+
+    num_agents (int): Number of agents. Must be a positive integer, default value is 2.
+    sigma_beta (float): Heterogeneity level, standard deviation of the power parameters' distribution. Must be in [0,1], default value is 0.
+    alpha (float): Collusive bid multiplier. Must be > 1.  
     '''
+
 
     def __init__(
         self, 
-        n_agents: int = 2, 
-        action_size: int = 2, 
+        num_agents: int = 2, 
         sigma_beta: float = 0.0, 
         alpha: float = 1.3
     ):
-        super(MPMGEnv, self).__init__()
 
-        # Collusive potential parameters
-        self.n_agents = n_agents
+        # Validate num_agents
+        if not isinstance(num_agents, int) or num_agents <= 0:
+            raise ValueError(f'num_agents must be a positive integer, not {num_agents}.')
+        self.num_agents = num_agents
+
+        # Validate sigma_beta
+        if not isinstance(sigma_beta, (float, int)) or not (0 <= sigma_beta <= 1):
+            raise ValueError(f'sigma_beta must be a float in the range [0, 1], not {sigma_beta}.')
         self.sigma_beta = sigma_beta
+
+        # Validate alpha
+        if not isinstance(alpha, (float, int)) or alpha <= 1:
+            raise ValueError(f'alpha must be a float greater than 1, not {alpha}.')
         self.alpha = alpha
 
         # Internal state action variables
-        self.action_size = action_size
-        self.joint_action_size = action_size ** self.n_agents
-        self.beta_size = self.n_agents
-        self.state_size = self.n_agents + self.joint_action_size + self.beta_size
+        self.action_size = 2
+        self.joint_action_size = self.action_size ** self.num_agents
+        self.beta_size = self.num_agents
+        self.state_size = self.num_agents + self.joint_action_size + self.beta_size
         self.state_space = {
             'action_frequencies': None,
             'joint_action_frequencies': None,
             'beta_parameters': None
         }
-
-    def _set_seed(self, seed: Optional[int]):
-        '''
-        Allow modular seeding for controlled experiments. Seeds built-in Python and NumPy random processes.
-        '''
-        if seed is not None:
-            random.seed(seed)
-            np.random.seed(seed)
 
     @staticmethod
     def _get_joint_action_code(actions: List[int]) -> int:
@@ -59,17 +59,17 @@ class MPMGEnv(object):
         for action in actions:
             action_code = (action_code << 1) | action
         return action_code
-
+    
     def _get_power_parameters(self) -> None:
         '''
         Generates market shares as power parameters based on market heterogeneity.
         '''
         # Homogeneous agents
         if self.sigma_beta == 0:
-            self.beta_parameters = np.ones(self.n_agents) / self.n_agents
+            self.beta_parameters = np.ones(self.num_agents) / self.num_agents
         # Heterogeneous agents
         else:
-            beta = np.abs(np.random.normal(1 / self.n_agents, self.sigma_beta, self.n_agents))
+            beta = np.abs(np.random.normal(1 / self.num_agents, self.sigma_beta, self.num_agents))
             self.beta_parameters = beta / np.sum(beta)
 
     def _update_action_frequencies(self, actions: List[int]) -> None:
@@ -108,41 +108,23 @@ class MPMGEnv(object):
         self.state_space['action_frequencies'] = self.action_frequencies
         self.state_space['joint_action_frequencies'] = self.joint_action_frequencies
         self.state_space['beta_parameters'] = self.beta_parameters
+        # To extend the state space
         # self.state_space['additional_variable'] = self.additional_variable
-        return self.state_space
+        return np.concatenate([v.flatten() for v in self.state_space.values()])
 
-    def reset(self, seed: Optional[int] = None) -> Dict[str, np.ndarray]:
+    def reset(self) -> Dict[str, np.ndarray]:
         '''
         Reset env with unbiased frequencies. Returns initial state.
         '''
-        self._set_seed(seed)
         self._get_power_parameters()
         self.iteration = 1  # not 0 because it's a counter
-        self.action_counts = np.zeros(self.n_agents)
+        self.action_counts = np.zeros(self.num_agents)
         self.joint_action_counts = np.zeros(self.joint_action_size)
 
         # Initialize state with unbiased frequencies (plays each joint action exactly once)
-        joint_actions = list(itertools.product(range(self.action_size), repeat=self.n_agents))
+        joint_actions = list(itertools.product(range(self.action_size), repeat=self.num_agents))
         for actions in joint_actions:
             _, _, _ = self.step(list(actions))
-        self._get_state()
-
-        return self.state_space
-
-    def reset(self, seed: Optional[int] = None) -> Dict[str, np.ndarray]:
-        '''
-        Reset env with unbiased frequencies. Returns initial state.
-        '''
-        self._set_seed(seed)
-        self._get_power_parameters()
-        self.iteration = 1 # not 0 because it's a counter
-        self.action_counts = np.zeros(self.n_agents)
-        self.joint_action_counts = np.zeros(self.joint_action_size)
-
-        # Initialize state with unbiased frequencies (plays each joint-action exactly once)
-        joint_actions = list(itertools.product(range(self.action_size), repeat=self.n_agents))
-        for actions in joint_actions:
-            _, __, ___ = self.step(actions)
         self._get_state()
 
         return self.state_space
@@ -151,9 +133,15 @@ class MPMGEnv(object):
         '''
         Executes a single step in the environment.
         '''
+        
+        # Check that actions is a list of integers
+        if not isinstance(actions, list) or not all(isinstance(action, int) for action in actions):
+            raise TypeError("actions must be a list of integers.")
+    
         # Update internal state variables
         self._update_action_frequencies(actions)
         self._update_joint_action_frequencies(actions)
+        # If self.beta_parameters is dynamic
         # self.beta_parameters = self._update_beta()
 
         # Get immediate rewards
