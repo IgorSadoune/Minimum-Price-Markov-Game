@@ -112,7 +112,7 @@ class MPMGEnv:
         # self.state_space['additional_variable'] = self.additional_variable
         return np.concatenate([v.flatten() for v in self.state_space.values()])
 
-    def reset(self) -> Dict[str, np.ndarray]:
+    def reset(self) -> np.ndarray:
         '''
         Reset env with unbiased frequencies. Returns initial state.
         '''
