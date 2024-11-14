@@ -26,19 +26,13 @@ mpmg/
 To install the package locally, run the following command from the root directory:
 
 ```sh
-pip install mpmg .
+pip install mpmg
 ```
 
 This installs the package in "editable" mode, meaning any changes made in the source code will immediately reflect in the installed package.
 
 ## Requirements
 - Python 3.6+
-
-Dependencies can be installed from `requirements.txt`:
-
-```sh
-pip install -r requirements.txt
-```
 
 ## Usage
 
