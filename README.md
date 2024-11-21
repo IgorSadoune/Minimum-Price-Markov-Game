@@ -16,6 +16,7 @@ mpmg/
 │   └── mpmg_env.py        # Environment implementation
 ├── .gitignore             # Ignored files for git
 ├── README.md              # Project description and usage guide
+├── MANIFEST.in            # Includes support files 
 ├── setup.py               # Installation script
 └── LICENSE                # License information
 ```
