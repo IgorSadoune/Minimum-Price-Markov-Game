@@ -35,7 +35,7 @@ This installs the package in "editable" mode, meaning any changes made in the so
 
 ## Usage
 
-### Parameter Definition
+### Input Parameters
 ```
 num_agents (int): Number of agents. Must be a positive integer, default value is 2.
 
@@ -44,7 +44,7 @@ sigma_beta (float): Heterogeneity level, standard deviation of the power paramet
 alpha (float): Collusive bid multiplier. Must be > 1.
 ```
 
-### Methods And Variables
+### Methods And Attributes
 The `MPMGEnv` class provides methods for resetting the environment, taking steps, and observing the state, rewards, and dynamics of multi-agent interactions.
 
 ```
@@ -61,13 +61,17 @@ Methods
     input: List[int]  
     output: (np.ndarray, np.ndarray, bool)
 
-Variables
----------
+Attributes
+----------
+num_agents (int): Number of agents.
 
-action_frequencies: action frequencies of action 1 for each player,         
-np.ndarray(num_agents)
+sigma_beta (float): Heterogeneity level.
 
-joint_action_frequencies: joint action frequencies for each joint action, np.ndarray(joint_action_size), with 2 ** num_agents as the joint action size.
+alpha (float): Collusive bid multiplier. 
+
+action_frequencies (np.ndarray(num_agents)): action frequencies of action 1 for each player.         
+
+joint_action_frequencies (np.ndarray(joint_action_size)): joint action frequencies for each joint action with 2 ** num_agents as the joint action size.
 ```
 
 Example use:
