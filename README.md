@@ -7,20 +7,6 @@
 ## Features
 - **Customizable Multi-Agent Environment**: Supports different numbers of agents and heterogeneous vs. homogeneous settings.
 
-## Project Structure
-
-```
-mpmg/
-├── mpmg/                  # Main package directory
-│   ├── __init__.py        # Package initialization
-│   └── mpmg_env.py        # Environment implementation
-├── .gitignore             # Ignored files for git
-├── README.md              # Project description and usage guide
-├── MANIFEST.in            # Includes support files 
-├── setup.py               # Installation script
-└── LICENSE                # License information
-```
-
 ## Installation
 
 To install the package locally, run the following command from the root directory:
