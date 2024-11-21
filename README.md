@@ -53,30 +53,21 @@ $$
 
 In fact, we can set \( u_i(\textit{CP}, k>0) = 0 \), meaning that when some players defect (FP) while others cooperate (CP), the cooperating agents receive no payoff, while defecting agents earn a share based on their market strengths relative to the defecting opponents. Let \( \Omega \subseteq \mathcal{N} \) denote the set of agents playing **FP**, and let the total market power of the defecting agents be \( \beta_\Omega = \sum_{j \in \Omega} \beta_j \). Assuming symmetric play where \( \beta_{\Omega} = 1 \), the payoffs in the general heterogeneous case are given in the table below.
 
-<table>
-    <thead>
-        <tr>
-            <th>Strategy Profile</th>
-            <th>\( k = 0 \)</th>
-            <th>\( k > 0 \)</th>
-            <th>\( k = n-1 \)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>\( u_i(\textit{FP}, k) \)</td>
-            <td>\( b_i \)</td>
-            <td>\( \frac{\beta_i}{\beta_{\Omega}} \cdot b_i \)</td>
-            <td>\( \beta_i \cdot b_i \)</td>
-        </tr>
-        <tr>
-            <td>\( u_i(\textit{CP}, k) \)</td>
-            <td>\( \alpha \cdot \beta_i \cdot b_i \)</td>
-            <td>\( 0 \)</td>
-            <td>\( 0 \)</td>
-        </tr>
-    </tbody>
-</table>
+
+The payoffs for different strategy profiles are as follows:
+
+- **For \( k = 0 \)**:
+  - \( u_i(\textit{FP}, k) = b_i \)
+  - \( u_i(\textit{CP}, k) = \alpha \cdot \beta_i \cdot b_i \)
+
+- **For \( k > 0 \)**:
+  - \( u_i(\textit{FP}, k) = \frac{\beta_i}{\beta_{\Omega}} \cdot b_i \)
+  - \( u_i(\textit{CP}, k) = 0 \)
+
+- **For \( k = n-1 \)**:
+  - \( u_i(\textit{FP}, k) = \beta_i \cdot b_i \)
+  - \( u_i(\textit{CP}, k) = 0 \)
+
 
 
 ## Usage
