@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='mpmg',  
-    version='0.2.2',  
+    version='0.2.1',  
     description='A Minimum Price Markov Game modular environment', 
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
