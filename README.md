@@ -22,6 +22,43 @@ This installs the package in "editable" mode, meaning any changes made in the so
 ## Requirements
 - Python 3.6+
 
+## MPMG Basics
+The MPG involves $n$ agents, represented by a set $\mathcal{N} = \{1,\dots,n\}$, competing to win a contract valued at $v$ in a first-price procurement auction.
+
+**Payoffs**
+All players are symmetric in their strategy set. Indeed, each agent $i$ chooses a strategy $s_i \in S$ where $S = \{\textit{FP}, \textit{CP}\}$. The strategy **Fair Price (FP)** is associated with bidding the fair price $b_i$, and **Collusive Price (CP)** is associated with bidding a higher price, defined by $\alpha \cdot b_i$, where $\tau \geq \alpha > 1$, with the upper bound $\tau$ ensuring realistic bids. We denote the strategy profile for a given occurrence as the tuple $(s_1, s_2, \dots, s_n)$.
+
+**Heterogeneity**
+Each agent $i$ has a market power defined by the parameter $\beta_i \in (0,1)$, with $\sum_{i \in \mathcal{N}} \beta_i = 1$, indicating that the average market strength, $\mu(\beta)$, is always $\frac{1}{n}$. This market power might represent the size of the agent or its market share, influencing its ability to reduce costs and leverage economies of scale. All agents share the same cost function, which determines their bids:
+
+$$
+b_i = (1-\beta_i)v \quad \forall i \in \mathcal{N}
+$$
+
+The notion of strong and weak agents is relative to the distribution of $\beta$, but according to the above equation, the closer $\beta$ is to 1, the lower the agent can bid, thus the stronger it is. Market heterogeneity is quantified by $\sigma(\beta)$, the standard deviation of the distribution of power parameter values. In a perfectly homogeneous market, $\sigma(\beta) = 0$ and $\beta_i = \frac{1}{n}$ for all $i$.
+
+**Payoffs**
+
+Let \( u_i(\textit{FP}, k) \) represent the payoff of agent \( i \) when it bids the fair price and \( k \) opponents also bid the fair price, and let \( u_i(\textit{CP}, k) \) denote the payoff of agent \( i \) when it bids the collusive price while \( k \) opponents bid the fair price, where \( k \in [0, n-1] \). The key idea from the minimum price rule is that coordination must be unanimous to achieve collusive profits. Therefore, the individual payoff for playing **CP** when all players cooperate surpasses the individual payoff from universal defection, i.e.,
+
+$$
+u_i(\textit{CP}, k=0) > u_i(\textit{FP}, k=n-1)
+$$
+
+However, defection must always yield a higher payoff than cooperation when at least one opponent defects, leading to
+
+$$
+u_i(\textit{FP}, k>0) > u_i(\textit{CP}, k>0)
+$$
+
+In fact, we can set \( u_i(\textit{CP}, k>0) = 0 \), meaning that when some players defect (FP) while others cooperate (CP), the cooperating agents receive no payoff, while defecting agents earn a share based on their market strengths relative to the defecting opponents. Let \( \Omega \subseteq \mathcal{N} \) denote the set of agents playing **FP**, and let the total market power of the defecting agents be \( \beta_\Omega = \sum_{j \in \Omega} \beta_j \). Assuming symmetric play where \( \beta_{\Omega} = 1 \), the payoffs in the general heterogeneous case are given in the table below.
+
+| Strategy Profile          | \( k = 0 \)                  | \( k > 0 \)                         | \( k = n-1 \)                |
+|---------------------------|------------------------------|-------------------------------------|------------------------------|
+| \( u_i(\textit{FP}, k) \) | \( b_i \)                    | \( \frac{\beta_i}{\beta_{\Omega}} \cdot b_i \) | \( \beta_i \cdot b_i \)      |
+| \( u_i(\textit{CP}, k) \) | \( \alpha \cdot \beta_i \cdot b_i \) | \( 0 \)                               | \( 0 \)                      |
+
+
 ## Usage
 
 ### Input Parameters
