@@ -69,9 +69,19 @@ sigma_beta (float): Heterogeneity level.
 
 alpha (float): Collusive bid multiplier. 
 
+action_size (int): action space size, which is always 2.
+
+joint_action_size (int): action_size ** num_agents, joint action space size.
+
+beta_size (int): num_agents, the size of the beta parameters array.
+
+state_size (int): num_agents + joint_action_size + beta_size. Size of the observation space. May change upon customization of the state space.
+
+state_space: The observation space is composed of 'action_frequencies', 'joint_action_frequencies', and 'beta_parameters', and is of size state_size.
+
 action_frequencies (np.ndarray(num_agents)): action frequencies of action 1 for each player.         
 
-joint_action_frequencies (np.ndarray(joint_action_size)): joint action frequencies for each joint action with 2 ** num_agents as the joint action size.
+joint_action_frequencies (np.ndarray(joint_action_size)): joint action frequencies for each joint action.
 ```
 
 Example use:
