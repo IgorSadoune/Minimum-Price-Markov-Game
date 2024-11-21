@@ -39,7 +39,7 @@ The notion of strong and weak agents is relative to the distribution of $\beta$,
 
 **Payoffs**
 
-Let \( u_i(\textit{FP}, k) \) represent the payoff of agent \( i \) when it bids the fair price and \( k \) opponents also bid the fair price, and let \( u_i(\textit{CP}, k) \) denote the payoff of agent \( i \) when it bids the collusive price while \( k \) opponents bid the fair price, where \( k \in [0, n-1] \). The key idea from the minimum price rule is that coordination must be unanimous to achieve collusive profits. Therefore, the individual payoff for playing **CP** when all players cooperate surpasses the individual payoff from universal defection, i.e.,
+Let $u_i(\textit{FP}, k)$ represent the payoff of agent $i$ when it bids the fair price and $k$ opponents also bid the fair price, and let $u_i(\textit{CP}, k)$ denote the payoff of agent $i$ when it bids the collusive price while $k$ opponents bid the fair price, where $k \in [0, n-1]$. The key idea from the minimum price rule is that coordination must be unanimous to achieve collusive profits. Therefore, the individual payoff for playing CP when all players cooperate surpasses the individual payoff from universal defection, i.e.,
 
 $$
 u_i(\textit{CP}, k=0) > u_i(\textit{FP}, k=n-1)
@@ -51,7 +51,7 @@ $$
 u_i(\textit{FP}, k>0) > u_i(\textit{CP}, k>0)
 $$
 
-In fact, we can set \( u_i(\textit{CP}, k>0) = 0 \), meaning that when some players defect (FP) while others cooperate (CP), the cooperating agents receive no payoff, while defecting agents earn a share based on their market strengths relative to the defecting opponents. Let \( \Omega \subseteq \mathcal{N} \) denote the set of agents playing **FP**, and let the total market power of the defecting agents be \( \beta_\Omega = \sum_{j \in \Omega} \beta_j \). Assuming symmetric play where \( \beta_{\Omega} = 1 \), the payoffs in the general heterogeneous case are given in the table below.
+In fact, we can set $u_i(\textit{CP}, k>0) = 0$, meaning that when some players defect (FP) while others cooperate (CP), the cooperating agents receive no payoff, while defecting agents earn a share based on their market strengths relative to the defecting opponents. Let $\Omega \subseteq \mathcal{N}$ denote the set of agents playing FP, and let the total market power of the defecting agents be $\beta_\Omega = \sum_{j \in \Omega} \beta_j$. Assuming symmetric play where $\beta_{\Omega} = 1$, the payoffs in the general heterogeneous case are given in the table below.
 
 
 | Strategy Profile          | $k = 0$                     | $k > 0$                              | $k = n-1$                  |
