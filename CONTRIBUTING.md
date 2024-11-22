@@ -1,10 +1,9 @@
-# For Potential Contributors
-If you want to contribute to the project please make sure to read the following paper: https://arxiv.org/abs/2407.03521, as well as the project README.md. Then, please contact me (igor.sadoune@polymtl.ca).
+# How To Contribute
+If you want to contribute to the project, please make sure to read the following paper: [https://arxiv.org/abs/2407.03521](https://arxiv.org/abs/2407.03521), as well as the project README.md. Then, please contact me at [igor.sadoune@polymtl.ca](mailto:igor.sadoune@polymtl.ca).
 
-Feel free to suggest any improvements or new features, I am open to any relevant improvement.
+Feel free to suggest any improvements or new features. I am open to any relevant contributions.
 
 ## Project Structure
-
 ```
 mpmg/
 ├── mpmg/                  # Main package directory
@@ -19,12 +18,12 @@ mpmg/
 
 ## Contribution Avenues
 
-There are many ways the MPMG can be enhanced, the end goal being to reach a realistic full-scale simulation. However, here are three potential improvements that I have in mind.  
+There are many ways the MPMG can be enhanced, with the end goal of reaching a realistic full-scale simulation. Here are three potential improvements that I have in mind:
 
 ### Dynamic Beta Parameters
-Beta parameters represent agents' power (or market shares if we think of the MPMG as a market). When those parameters differ from agent ot agent, the game is heterogeneous. Having dynamic beta values that change overtime and according to the current game's state brings an element of dynamic allowing agent to grow or to weaken in strength.
+Beta parameters represent agents' power (or market shares if we think of the MPMG as a market). When those parameters differ from agent to agent, the game is heterogeneous. Having dynamic beta values that change over time and according to the current game state would allow agents to grow or weaken in strength.
 
-Such feature should be implemented in mpmg/mpmg_env.py in the MPMGEnv class:
+Such a feature should be implemented in `mpmg/mpmg_env.py` in the `MPMGEnv` class:
 
 ```python
 def _update_beta(self) -> None:
@@ -33,7 +32,7 @@ def _update_beta(self) -> None:
     '''
     pass
 ```
-and integrated to the flow of the `step()` method. Power parameters are currently initialized using 
+and integrated into the flow of the `step()` method. Power parameters are currently initialized using 
 
 ```python
 def _get_power_parameters(self) -> None:
@@ -48,69 +47,69 @@ def _get_power_parameters(self) -> None:
         beta = np.abs(np.random.normal(1 / self.num_agents, self.sigma_beta, self.num_agents))
         self.beta_parameters = beta / np.sum(beta)
 ```
-which should be renamed as `_get_initial_power_parameters()` in such case.
+which should be renamed as `_get_initial_power_parameters()` in this case.
 
 ### Bigger Observation Space
-The observation space is defined in (mpmg/mpmg_env.py, MPMGEnv class)
+The observation space is defined in (`mpmg/mpmg_env.py`, `MPMGEnv` class):
+
 ```python
-    def __init__(
-        self, 
-        num_agents: int = 2, 
-        sigma_beta: float = 0.0, 
-        alpha: float = 1.3
-    ):
+def __init__(
+    self, 
+    num_agents: int = 2, 
+    sigma_beta: float = 0.0, 
+    alpha: float = 1.3
+):
+    # Validate num_agents
+    if not isinstance(num_agents, int) or num_agents <= 0:
+        raise ValueError(f'num_agents must be a positive integer, not {num_agents}.')
+    self.num_agents = num_agents
 
-        # Validate num_agents
-        if not isinstance(num_agents, int) or num_agents <= 0:
-            raise ValueError(f'num_agents must be a positive integer, not {num_agents}.')
-        self.num_agents = num_agents
+    # Validate sigma_beta
+    if not isinstance(sigma_beta, (float, int)) or not (0 <= sigma_beta <= 1):
+        raise ValueError(f'sigma_beta must be a float in the range [0, 1], not {sigma_beta}.')
+    self.sigma_beta = sigma_beta
 
-        # Validate sigma_beta
-        if not isinstance(sigma_beta, (float, int)) or not (0 <= sigma_beta <= 1):
-            raise ValueError(f'sigma_beta must be a float in the range [0, 1], not {sigma_beta}.')
-        self.sigma_beta = sigma_beta
+    # Validate alpha
+    if not isinstance(alpha, (float, int)) or alpha <= 1:
+        raise ValueError(f'alpha must be a float greater than 1, not {alpha}.')
+    self.alpha = alpha
 
-        # Validate alpha
-        if not isinstance(alpha, (float, int)) or alpha <= 1:
-            raise ValueError(f'alpha must be a float greater than 1, not {alpha}.')
-        self.alpha = alpha
-
-        # Internal state action variables
-        self.action_size = 2
-        self.joint_action_size = self.action_size ** self.num_agents
-        self.beta_size = self.num_agents
-        self.state_size = self.num_agents + self.joint_action_size + self.beta_size
-        self.state_space = {
-            'action_frequencies': None,
-            'joint_action_frequencies': None,
-            'beta_parameters': None
-        }
+    # Internal state action variables
+    self.action_size = 2
+    self.joint_action_size = self.action_size ** self.num_agents
+    self.beta_size = self.num_agents
+    self.state_size = self.num_agents + self.joint_action_size + self.beta_size
+    self.state_space = {
+        'action_frequencies': None,
+        'joint_action_frequencies': None,
+        'beta_parameters': None
+    }
 ```
 and updated by 
 
 ```python
-    def _get_state(self) -> np.ndarray:
-        '''
-        Observation space can be incremented here.
-        '''
-        self.state_space['action_frequencies'] = self.action_frequencies
-        self.state_space['joint_action_frequencies'] = self.joint_action_frequencies
-        self.state_space['beta_parameters'] = self.beta_parameters
-        # To extend the state space
-        # self.state_space['additional_variable'] = self.additional_variable
-        return np.concatenate([v.flatten() for v in self.state_space.values()])
+def _get_state(self) -> np.ndarray:
+    '''
+    Observation space can be incremented here.
+    '''
+    self.state_space['action_frequencies'] = self.action_frequencies
+    self.state_space['joint_action_frequencies'] = self.joint_action_frequencies
+    self.state_space['beta_parameters'] = self.beta_parameters
+    # To extend the state space
+    # self.state_space['additional_variable'] = self.additional_variable
+    return np.concatenate([v.flatten() for v in self.state_space.values()])
 ```
-in the same class. Both needs to be modified upon chanegs to the observation space, and additional methods might be needed to support your idea.
+in the same class. Both need to be modified upon changes to the observation space, and additional methods might be needed to support your idea.
 
 ### Continuous Action Space
-Adding a game version with continuous action space should involve a new class `MPMGContinuousEnv`, in a new file `mpmg_continuous_env.py`, so that the continuous implementation is contained in its own thread. Users could then potentially use both by importing those class from the main `mpmg` directory.
+Adding a game version with a continuous action space should involve creating a new class `MPMGContinuousEnv` in a new file `mpmg_continuous_env.py`, so that the continuous implementation is contained in its own module. Users could then potentially use both by importing these classes from the main `mpmg` directory.
 
-The continuous action space could be convexe (e.g., [0,1]) or non-convexe using continuous and separate ranges, depending on what you want to implement.  
+The continuous action space could be convex (e.g., [0,1]) or non-convex, using continuous and separate ranges, depending on your implementation.
 
-## Project Integrity and Coding Convention
-Upon request, I would make you contributor of the project. Your contribution must be developed on a separate branch as you would not have access to the master banch. I would be the one to review the associated Pull Request.
+## Project Integrity and Coding Conventions
+Upon request, I would make you a contributor to the project. Your contribution must be developed on a separate branch, as you would not have direct access to the master branch. I will review the associated pull requests.
 
-please respect Python conventions for private and public methods and attributes, as well as naming conventions for code portability. Also, please use Typing for further clarity and portability. 
+Please respect Python conventions for private and public methods and attributes, as well as naming conventions for code portability. Also, please use typing for further clarity and portability. 
 
 To contribute to the MPMG project, please follow these steps:
 
@@ -129,5 +128,5 @@ Before submitting your changes, make sure to:
 - If your changes introduce new functionality, **add unit tests** to validate your implementation.
 - Use consistent **naming conventions** and **typing** to keep the codebase clean and readable.
 
-## Author 
-Igor Sadoune - igor.sadoune@polymtl.ca
+## Author
+Igor Sadoune - [igor.sadoune@polymtl.ca](mailto:igor.sadoune@polymtl.ca)
