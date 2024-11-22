@@ -6,6 +6,9 @@
 
 The paper introducing the MPMG can be found here: https://arxiv.org/abs/2407.03521
 
+## For Potential Contributors
+If you want to contribute to the MPMG project please make sure to read the paper, the present README.md, as well as the CONTRIBUTING.md file. Thank you.
+
 ## Features
 - **Customizable Multi-Agent Environment**: Supports different numbers of agents and heterogeneous vs. homogeneous settings.
 
